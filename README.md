@@ -1,13 +1,9 @@
 #fake-jwt-token-api
 
-#### install
-npm install
+#### npm install
 
-#### run
-npm start
+#### npm start
 
-#### get token from backend
-
-get token
+#### get token
 
 curl http://127.0.0.1:8124/
