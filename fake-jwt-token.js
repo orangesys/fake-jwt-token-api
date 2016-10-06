@@ -2,6 +2,15 @@ var http = require('http');
 var uuid = require('node-uuid');
 var nJwt = require('njwt');
 
+function stringGen(len)
+{
+    var text = " ";
+    var charset = "abcdefghijklmnopqrstuvwxyz";
+    for( var i=0; i < len; i++ )
+        text += charset.charAt(Math.floor(Math.random() * charset.length));
+    return text;
+}
+
 
 // https://getkong.org/plugins/jwt/
 // curl -X POST http://kong:8001/consumers/{consumer}/jwt
@@ -23,8 +32,13 @@ http.createServer(function (request, response) {
   }
   var jwt = nJwt.create(claims,secret);
   var token = jwt.compact();
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.end(token);
+  var consumerId = stringGen(6);
+  response.writeHead(200, {'Content-Type': 'application/json'});
+  var json = JSON.stringify({
+    consumerId: consumerId,
+    token: token
+  });
+  response.end(json);
 }).listen(8124);
  
 console.log('Server running at http://127.0.0.1:8124/');
