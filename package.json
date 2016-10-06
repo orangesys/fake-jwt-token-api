@@ -1,0 +1,15 @@
+{
+  "name": "fake-jwt-token-api",
+  "version": "0.1.0",
+  "description": "fake jwt token api in dev",
+  "main": "fake-jwt-token.js",
+  "scripts": {
+    "start": "node fake-jwt-token.js"
+  },
+  "author": "",
+  "dependencies": {
+    "njwt": "latest",
+    "node-uuid": "latest"
+  },
+  "license": "MIT"
+}
