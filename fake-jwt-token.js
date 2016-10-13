@@ -12,19 +12,6 @@ function stringGen(len)
     return text;
 }
 
-// https://getkong.org/plugins/jwt/
-// curl -X POST http://kong:8001/consumers/{consumer}/jwt
-// HTTP/1.1 201 Created
-//
-// {
-//     "consumer_id": "7bce93e1-0a90-489c-c887-d385545f8f4b",
-//     "created_at": 1442426001000,
-//     "id": "bcbfb45d-e391-42bf-c2ed-94e32946753a",
-//     "key": "a36c3049b36249a3c9f8891cb127243c",    this is iss in jwt
-//     "secret": "e71829c351aa4242c2719cbfbe671c09"
-// }
-//
-//
 http.createServer(function (request, response) {
   var query = url.parse(request.url,true).query;
   if (query["rp"])
@@ -38,19 +25,13 @@ http.createServer(function (request, response) {
   }
   else
   {
-    var re = /\/[a-z]{6}\//;
-    var url_parts = url.parse(request.url,true).path;
-    var consumerid = url_parts.match(re)[0].split('/').join('');
-    var secret = uuid.v4();
-    var claims = {
-      iss: "a36c3049b36249a3c9f8891cb127243c",
-    }
-    var jwt = nJwt.create(claims,secret);
-    var token = jwt.compact();
     response.writeHead(200, {'Content-Type': 'application/json'});
     var json = JSON.stringify({
-      consumerid : consumerid,
-      token : token
+      consumer_id: uuid.v4(),
+      created_at: Date.now(),
+      id : uuid.v4(),
+      key : uuid.v4(),
+      secret : uuid.v4()
     });
     response.end(json);
   }
