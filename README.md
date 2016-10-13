@@ -14,7 +14,7 @@ curl 127.0.0.1:8124/?rp=40d
 {"consumerId":" pmcyry"}
 ```
 
-get jwt
+#### get jwt
 ```bash
 http 127.0.0.1:8124/consumers/pmcyry/jwt
 ```
