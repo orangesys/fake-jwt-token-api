@@ -6,13 +6,19 @@
 
 #### get consumerid
 
-```
+```bash
 curl 127.0.0.1:8124/?rp=40d
-{"consumerId":" pmcyry"}
 ```
 
 ```
+{"consumerId":" pmcyry"}
+```
+
+get jwt
+```bash
 http 127.0.0.1:8124/consumers/pmcyry/jwt
+```
+```
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Type: application/json
