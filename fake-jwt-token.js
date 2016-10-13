@@ -1,4 +1,5 @@
 var http = require('http');
+var url = require('url');
 var uuid = require('node-uuid');
 var nJwt = require('njwt');
 
@@ -10,7 +11,6 @@ function stringGen(len)
         text += charset.charAt(Math.floor(Math.random() * charset.length));
     return text;
 }
-
 
 // https://getkong.org/plugins/jwt/
 // curl -X POST http://kong:8001/consumers/{consumer}/jwt
@@ -26,19 +26,34 @@ function stringGen(len)
 //
 //
 http.createServer(function (request, response) {
-  var secret = uuid.v4();
-  var claims = {
-    iss: "a36c3049b36249a3c9f8891cb127243c",
+  var query = url.parse(request.url,true).query;
+  if (query["rp"])
+  {
+    var consumerId = stringGen(6);
+    response.writeHead(200, {'Content-Type': 'application/json'});
+    var json = JSON.stringify({
+      consumerId: consumerId
+    });
+    response.end(json);
   }
-  var jwt = nJwt.create(claims,secret);
-  var token = jwt.compact();
-  var consumerId = stringGen(6);
-  response.writeHead(200, {'Content-Type': 'application/json'});
-  var json = JSON.stringify({
-    consumerId: consumerId,
-    token: token
-  });
-  response.end(json);
+  else
+  {
+    var re = /\/[a-z]{6}\//;
+    var url_parts = url.parse(request.url,true).path;
+    var consumerid = url_parts.match(re)[0].split('/').join('');
+    var secret = uuid.v4();
+    var claims = {
+      iss: "a36c3049b36249a3c9f8891cb127243c",
+    }
+    var jwt = nJwt.create(claims,secret);
+    var token = jwt.compact();
+    response.writeHead(200, {'Content-Type': 'application/json'});
+    var json = JSON.stringify({
+      consumerid : consumerid,
+      token : token
+    });
+    response.end(json);
+  }
 }).listen(8124);
  
 console.log('Server running at http://127.0.0.1:8124/');
