@@ -5,7 +5,7 @@ var jwt = require('jwt-simple');
 
 function stringGen(len)
 {
-    var text = " ";
+    var text = "";
     var charset = "abcdefghijkmnopqrstuvwxyz";
     for( var i=0; i < len; i++ )
         text += charset.charAt(Math.floor(Math.random() * charset.length));
