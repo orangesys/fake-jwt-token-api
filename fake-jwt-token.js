@@ -27,6 +27,16 @@ http.createServer(function (request, response) {
   {
     var consumerId = stringGen(6);
     var token = jwttoken();
+
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Request-Method', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST');
+    response.setHeader('Access-Control-Allow-Headers', '*');
+    if (request.method === 'OPTIONS') {
+      response.writeHead(200);
+      response.end();
+      return;
+    }
     response.writeHead(200, {'Content-Type': 'application/json'});
     var json = JSON.stringify({
       consumerId: consumerId,
@@ -35,5 +45,5 @@ http.createServer(function (request, response) {
     response.end(json);
   }
 }).listen(8124);
- 
+
 console.log('Server running at http://127.0.0.1:8124/');
