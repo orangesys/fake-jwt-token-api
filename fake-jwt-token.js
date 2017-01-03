@@ -23,6 +23,7 @@ function jwttoken() {
 
 http.createServer(function (request, response) {
   var query = url.parse(request.url,true).query;
+  console.log('url: ', request.url, ', query: ', query);
   if (query["rp"])
   {
     var consumerId = stringGen(6);
@@ -31,7 +32,7 @@ http.createServer(function (request, response) {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Request-Method', '*');
     response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST');
-    response.setHeader('Access-Control-Allow-Headers', '*');
+    response.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     if (request.method === 'OPTIONS') {
       response.writeHead(200);
       response.end();
@@ -42,6 +43,7 @@ http.createServer(function (request, response) {
       consumerId: consumerId,
       token: token
     });
+    console.log("response:", json);
     response.end(json);
   }
 }).listen(8124);
